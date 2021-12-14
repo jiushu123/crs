@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.crs.mapper.CarMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.crs.bean.Car" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="car_name" property="carName" jdbcType="VARCHAR" />
+    <result column="car_price" property="carPrice" jdbcType="DOUBLE" />
+    <result column="car_order" property="carOrder" jdbcType="VARCHAR" />
+    <result column="car_state" property="carState" jdbcType="INTEGER" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="assign_time" property="assignTime" jdbcType="TIMESTAMP" />
+    <result column="is_valid" property="isValid" jdbcType="INTEGER" />
+    <result column="rent_time" property="rentTime" jdbcType="TIMESTAMP" />
+    <result column="return_time" property="returnTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, car_name, car_price, car_order, car_state, description, assign_time, is_valid,
+    rent_time, return_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from t_car
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_car
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yjxxt.crs.bean.Car" >
+    insert into t_car (id, car_name, car_price,
+      car_order, car_state, description,
+      assign_time, is_valid, rent_time,
+      return_time)
+    values (#{id,jdbcType=INTEGER}, #{carName,jdbcType=VARCHAR}, #{carPrice,jdbcType=DOUBLE},
+      #{carOrder,jdbcType=VARCHAR}, #{carState,jdbcType=INTEGER}, #{description,jdbcType=VARCHAR},
+      #{assignTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=INTEGER}, #{rentTime,jdbcType=TIMESTAMP},
+      #{returnTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.crs.bean.Car" >
+    insert into t_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="carName != null" >
+        car_name,
+      </if>
+      <if test="carPrice != null" >
+        car_price,
+      </if>
+      <if test="carOrder != null" >
+        car_order,
+      </if>
+      <if test="carState != null" >
+        car_state,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="assignTime != null" >
+        assign_time,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="rentTime != null" >
+        rent_time,
+      </if>
+      <if test="returnTime != null" >
+        return_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="carName != null" >
+        #{carName,jdbcType=VARCHAR},
+      </if>
+      <if test="carPrice != null" >
+        #{carPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="carOrder != null" >
+        #{carOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="carState != null" >
+        #{carState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null" >
+        #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="rentTime != null" >
+        #{rentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTime != null" >
+        #{returnTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.crs.bean.Car" >
+    update t_car
+    <set >
+      <if test="carName != null" >
+        car_name = #{carName,jdbcType=VARCHAR},
+      </if>
+      <if test="carPrice != null" >
+        car_price = #{carPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="carOrder != null" >
+        car_order = #{carOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="carState != null" >
+        car_state = #{carState,jdbcType=INTEGER},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="assignTime != null" >
+        assign_time = #{assignTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=INTEGER},
+      </if>
+      <if test="rentTime != null" >
+        rent_time = #{rentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnTime != null" >
+        return_time = #{returnTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.crs.bean.Car" >
+    update t_car
+    set car_name = #{carName,jdbcType=VARCHAR},
+      car_price = #{carPrice,jdbcType=DOUBLE},
+      car_order = #{carOrder,jdbcType=VARCHAR},
+      car_state = #{carState,jdbcType=INTEGER},
+      description = #{description,jdbcType=VARCHAR},
+      assign_time = #{assignTime,jdbcType=TIMESTAMP},
+      is_valid = #{isValid,jdbcType=INTEGER},
+      rent_time = #{rentTime,jdbcType=TIMESTAMP},
+      return_time = #{returnTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 还车  批量和单台 -->
+  <update id="deleteBatch">
+    update
+    t_car
+    set
+    car_state = 1
+    where
+    id
+    in
+    <foreach collection="array" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <!-- 删除租车历史记录 -->
+  <delete id="deleteByCarId">
+    delete from t_user_car where car_id in
+    <foreach collection="array" item="carId" open="(" close=")" separator=",">
+      #{carId}
+    </foreach>
+
+
+  </delete>
+
+
+  <!--    多条件查询-->
+
+  <select id="selectByParamsAndId" resultType="com.yjxxt.crs.bean.Car">
+
+    SELECT c.id ,c.car_name,c.car_order,c.car_price,c.description,c.assign_time,c.rent_time,c.return_time
+    FROM t_car c
+    join t_user_car t
+    on t.car_id =c.id
+    <where>
+      c.car_state = 2
+      and t.user_id =#{userId}
+      <if test="query.carName != null and query.carName != ''">
+        and c.car_name like concat('%',#{query.carName},'%')
+      </if>
+      <if test="query.carOrder != null and query.carOrder != ''">
+        and c.car_order like concat('%',#{query.carOrder},'%')
+      </if>
+    </where>
+  </select>
+  <!-- 车辆设置的多条件查询 -->
+  <select id="manageCarSelectByParams" parameterType="ManageCarQuery" resultType="Car">
+    select
+    *
+    from
+    t_car
+    <where>
+      is_valid = 1
+      <if test="carName != null and carName != ''">
+        and car_name like concat('%',#{carName},'%')
+      </if>
+      <if test="carPrice != null and carPrice != ''">
+        and car_price = #{carPrice}
+      </if>
+      <if test="carState != null and carState != ''">
+        and car_state = #{carState}
+      </if>
+    </where>
+  </select>
+  <!-- 车辆设置的批量删除 -->
+  <update id="manageCarDeleteBatch">
+    update
+    t_car
+    set
+    is_valid = 0
+    where
+    id
+    in
+    <foreach collection="array" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+  <!--我要租车的多条件查询-->
+  <select id="RentCarSelectByParams" resultType="com.yjxxt.crs.bean.Car">
+    select
+    <include refid="Base_Column_List" />
+    from
+    t_car c
+    <where>
+      is_valid=1
+      <if test="carName != null and carName != ''">
+        and c.car_name like concat('%',#{carName},'%')
+      </if>
+      <if test="carPrice != null and carPrice != ''">
+        and c.car_price = #{carPrice}
+      </if>
+      <if test="carState != null and carState != ''">
+        and c.car_state = #{carState}
+      </if>
+    </where>
+  </select>
+
+  <select id="countUserCarByUserId" resultType="java.lang.Integer">
+    select count(*)
+    from t_user_car
+    where user_id = #{userId}
+  </select>
+
+    <!--我要租车的批量-->
+  <update id="changeCarState">
+    update
+    t_car
+    set
+    car_state = 2 , rent_time = #{rentTime}
+    where
+    id
+    in
+    <foreach collection="ids" item="id" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <!-- 我要租车，插入用户车辆记录 -->
+  <insert id="insertUserCarByParams" parameterType="com.yjxxt.crs.bean.UserCar" >
+    insert into t_user_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="carId != null" >
+        car_id,
+      </if>
+      <if test="rentDate != null" >
+        rent_date,
+      </if>
+      <if test="returnDate != null" >
+        return_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="carId != null" >
+        #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="rentDate != null" >
+        #{rentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnDate != null" >
+        #{returnDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+</mapper>

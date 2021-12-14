@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.crs.mapper.UserCarMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.crs.bean.UserCar" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="car_id" property="carId" jdbcType="INTEGER" />
+    <result column="rent_date" property="rentDate" jdbcType="TIMESTAMP" />
+    <result column="return_date" property="returnDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, car_id, rent_date, return_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_user_car
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_user_car
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+
+  <!--根据id删除中间表-->
+  <delete id="deleteUserRoleByUserId">
+    delete
+    from t_user_car
+    where user_id = #{userId}
+  </delete>
+
+    <insert id="insert" parameterType="com.yjxxt.crs.bean.UserCar" >
+    insert into t_user_car (id, user_id, car_id, 
+      rent_date, return_date)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{carId,jdbcType=INTEGER}, 
+      #{rentDate,jdbcType=TIMESTAMP}, #{returnDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.crs.bean.UserCar" >
+    insert into t_user_car
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="carId != null" >
+        car_id,
+      </if>
+      <if test="rentDate != null" >
+        rent_date,
+      </if>
+      <if test="returnDate != null" >
+        return_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="carId != null" >
+        #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="rentDate != null" >
+        #{rentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnDate != null" >
+        #{returnDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.crs.bean.UserCar" >
+    update t_user_car
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="carId != null" >
+        car_id = #{carId,jdbcType=INTEGER},
+      </if>
+      <if test="rentDate != null" >
+        rent_date = #{rentDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="returnDate != null" >
+        return_date = #{returnDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.crs.bean.UserCar" >
+    update t_user_car
+    set user_id = #{userId,jdbcType=INTEGER},
+      car_id = #{carId,jdbcType=INTEGER},
+      rent_date = #{rentDate,jdbcType=TIMESTAMP},
+      return_date = #{returnDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

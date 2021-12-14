@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yjxxt.crs.mapper.ModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.yjxxt.crs.bean.Module" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="INTEGER" />
+    <result column="parent_opt_value" property="parentOptValue" jdbcType="VARCHAR" />
+    <result column="grade" property="grade" jdbcType="INTEGER" />
+    <result column="opt_value" property="optValue" jdbcType="VARCHAR" />
+    <result column="is_valid" property="isValid" jdbcType="TINYINT" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, module_name, parent_id, parent_opt_value, grade, opt_value, is_valid, create_date, 
+    update_date
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_module
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <!--根据条件查询对应的权限-->
+    <select id="queryModules" resultType="com.yjxxt.crs.bean.Module">
+      select id,module_name,opt_valid,create_date,update_date
+      from t_module
+      <where>
+        <if test="moduleName != null and moduleName != ''">
+          and module_name like concat('%',#{moduleName},'%')
+        </if>
+        <if test="optValid != null and optValid != ''">
+          and opt_valid like concat(#{optValid},'%')
+        </if>
+      </where>
+
+    </select>
+
+  <!--统计父id已经其下的所有资源数量-->
+  <select id="countSubModuleByParentId" resultType="java.lang.Integer">
+    select count(1) from t_module where parent_id=#{mid}
+  </select>
+
+  <!--根据权限码查询该权限！-->
+  <select id="queryModuleByOptValue" resultType="com.yjxxt.crs.bean.Module">
+    select * from t_module where opt_value=#{optValue }
+  </select>
+  <!--根据父id和url查询资源-->
+  <select id="queryModuleByGradeAndUrl" resultType="com.yjxxt.crs.bean.Module">
+    select * from t_module where grade=#{grade } and url=#{url }
+  </select>
+  <!--根据父id和资源名查找资源-->
+  <select id="queryModuleByGradeAndModuleName" resultType="com.yjxxt.crs.bean.Module">
+    select * from t_module where grade=#{grade } and module_name=#{moduleName };
+  </select>
+
+  <!--多条件查询-->
+  <select id="selectByParams" resultType="com.yjxxt.crs.bean.Module">
+    select
+     id, module_name, opt_value, create_date, update_date
+    from t_module
+    <where>
+        is_valid = 1
+      <if test="null != moduleName and moduleName !=''">
+        and module_name like concat('%',#{moduleName},'%')
+      </if>
+      <if test="null != optValue and optValue !=''">
+        and opt_value like concat(#{optValue},'%')
+      </if>
+    </where>
+  </select>
+  <!--根据父id查询权限-->
+    <select id="queryModuleByParent" resultType="com.yjxxt.crs.bean.Module">
+      select
+        id, module_name, opt_value, create_date, update_date
+      from t_module
+        where id = #{parentId}
+    </select>
+  <!--查询所有的资源模块信息 三个字段-->
+  <select id="selectModules" resultType="com.yjxxt.crs.dto.TreeDto">
+    select id,parent_id as pId, module_name as name from t_module;
+  </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_module
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yjxxt.crs.bean.Module" >
+    insert into t_module (id, module_name, parent_id, 
+      parent_opt_value, grade, opt_value, 
+      is_valid, create_date, update_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{moduleName,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER}, 
+      #{parentOptValue,jdbcType=VARCHAR}, #{grade,jdbcType=INTEGER}, #{optValue,jdbcType=VARCHAR}, 
+      #{isValid,jdbcType=TINYINT}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yjxxt.crs.bean.Module" >
+    insert into t_module
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="moduleName != null" >
+        module_name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="parentOptValue != null" >
+        parent_opt_value,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="optValue != null" >
+        opt_value,
+      </if>
+      <if test="isValid != null" >
+        is_valid,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentOptValue != null" >
+        #{parentOptValue,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="optValue != null" >
+        #{optValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.yjxxt.crs.bean.Module" >
+    update t_module
+    <set >
+      <if test="moduleName != null" >
+        module_name = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="parentOptValue != null" >
+        parent_opt_value = #{parentOptValue,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=INTEGER},
+      </if>
+      <if test="optValue != null" >
+        opt_value = #{optValue,jdbcType=VARCHAR},
+      </if>
+      <if test="isValid != null" >
+        is_valid = #{isValid,jdbcType=TINYINT},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yjxxt.crs.bean.Module" >
+    update t_module
+    set module_name = #{moduleName,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=INTEGER},
+      parent_opt_value = #{parentOptValue,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=INTEGER},
+      opt_value = #{optValue,jdbcType=VARCHAR},
+      is_valid = #{isValid,jdbcType=TINYINT},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
